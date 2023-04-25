@@ -1,0 +1,178 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+  integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<app-option-stats
+  [nbtotal]="nbtotal"
+  [nbgamix]="nbgamix"
+  [nbnids]="nbnids"
+  [nbse]="nbse"
+  [nbsim]="nbsim"
+></app-option-stats>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <router-outlet></router-outlet>
+
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div
+          class="card-header border-0"
+          style="display: flex; justify-content: space-between"
+        >
+          <div class="container">
+            <h3 class="animate-charcter">STUDENTS TABLE</h3>
+          </div>
+
+          <app-recherche (search)="onsearch($event)"></app-recherche>
+
+          <button class="button-50" routerLink="/addStudent">
+            Add Student
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Option</th>
+                <th scope="col">Completion</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody
+              *ngFor="
+                let std of etudiants
+                  | paginate
+                    : {
+                        id: 'listingpagination',
+                        itemsPerPage: 5,
+                        currentPage: page,
+                        totalItems: totalRecords
+                      }
+              "
+            >
+              <tr
+                *ngIf="
+                  searchT === '' ||
+                  std.nomE.toLowerCase().includes(searchT) ||
+                  std.prenomE.toLowerCase().includes(searchT) ||
+                  std.option.toLowerCase().includes(searchT) ||
+                  std.departement?.nomDepart.toLowerCase().includes(searchT)
+                "
+              >
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <a
+                      href="javascript:void(0)"
+                      class="avatar rounded-circle mr-3"
+                    >
+                      <img
+                        alt="Image placeholder"
+                        src="../assets/img/theme/bootstrap.jpg"
+                      />
+                    </a>
+                    <div class="media-body">
+                      <span class="mb-0 text-sm">{{ std?.nomE }}</span>
+                    </div>
+                  </div>
+                </th>
+                <td>
+                  {{ std?.prenomE }}
+                </td>
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    <i
+                      [ngClass]="{
+                        'fas fa-ellipsis-v': std.option === 'nids',
+                        'fas fa-users': std.option === 'se',
+                        'ni ni-controller': std.option === 'gamix'
+                      }"
+                    ></i>
+                    {{ std?.option }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{ std.departement?.nomDepart }}</span>
+                     <div>
+                      <div class="progress" *ngIf="std.departement!==null" >
+
+                        <div
+                          [ngStyle]="{'width':std.departement?.nomDepart === 'web' ?this.totalpercentage: this.totalmobilepercentage }"
+                          class="progress-bar bg-warning"
+                          role="progressbar"
+                          aria-valuenow="30"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+
+                        ></div>
+                      </div>
+
+                    </div><div *ngIf="std.departement?.nomDepart==='web' " [ngStyle]=" this.x<50 ?{'color':'red','font-style':'italic'} :{'color':'green'}" >{{this.totalpercentage}} </div>
+                    <div *ngIf="std.departement?.nomDepart==='mobile'" [ngStyle]=" this.w<50 ?{'color':'red','font-style':'italic'} :{'color':'green'}"   >{{this.totalmobilepercentage}} </div>
+
+                  </div>
+                </td>
+                <td class="text-right">
+                  <div ngbDropdown placement="bottom-right">
+                    <a
+                      class="btn btn-sm btn-icon-only text-light"
+                      ngbDropdownToggle
+                    >
+                      <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div
+                      ngbDropdownMenu
+                      class="dropdown-menu-right dropdown-menu-arrow"
+                    >
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['user-profile', std.idEtudiant]"
+                        >Details</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        (click)="onDeleteEmloyee(std?.idEtudiant)"
+                        >Delete</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Something else here</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer py-4">
+          <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <div>
+                <pagination-controls
+                  id="listingpagination"
+                  maxSize="5"
+                  (pageChange)="page = $event"
+                  previousLabel="Prev"
+                  nextLabel="Next"
+                ></pagination-controls>
+              </div>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

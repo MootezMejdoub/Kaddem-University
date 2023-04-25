@@ -1,0 +1,176 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"></div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <!-- Dark table -->
+
+
+  <div class="row">
+    <div class="col">
+      <div class="card bg-default shadow mb-5">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Details equipes</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Salle</th>
+                <th scope="col">Thematique</th>
+                <th scope="col">Equipe</th>
+
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detailequipe of listDetailEquipe">
+                <td>
+                  {{ detailequipe.salle }}
+                </td>
+                <td>{{ detailequipe.thematique }}</td>
+                <td>
+                  {{ detailequipe.equipe?.nomEquipe }}
+                </td>
+
+
+
+
+
+
+
+                <td>
+                  <button
+                    class="rounded-btn mr-3"
+                    style="background-color: #3f51b5"
+                    type="button"
+                    [routerLink]="['/updateDetailE', detailequipe.idDetailEquipe]"
+                  >
+                    <i class="fas fa-pen"></i>
+                  </button>
+                  <button
+                    class="rounded-btn mr-3"
+                    style="background-color: #f75676"
+                    type="button"
+                    (click)="deleteDe(detailequipe.idDetailEquipe)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <button type="button"  data-toggle="modal" data-target="#exampleModal"  class="float-btn">
+    <i class="fas fa-plus my-float"></i>
+  </button>
+  <!-- Button trigger modal -->
+  <!-- Button trigger modal -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter detail equipe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" (ngSubmit)="addDe()" >
+          <h6 class="heading-small text-muted mb-4">detail equipe information</h6>
+          <div class="pl-lg-4">
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-montant"
+                    >Salle</label
+                  >
+
+                  <input
+                  type="number"
+                  id="input-montant"
+                  name="montant"
+                  class="form-control form-control-alternative"
+                  placeholder="Montant"
+                  [(ngModel)]="detailE.salle"
+                  required
+                  pattern="[1-9][0-9]*"
+                  #montant="ngModel"
+                />
+                <div *ngIf="montant.errors?.['required']">
+                  <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Salle obligatoire
+                  </div>
+                </div>
+                <div *ngIf="montant.errors?.['pattern']">
+                  <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    La salle ne contient que des chiffres
+                    positives
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-them"
+                    >thématique</label
+                  >
+                  <input
+                    type="text"
+                    id="input-them"
+                    name="thematique"
+                    class="form-control form-control-alternative"
+                    placeholder="thematique"
+                    [(ngModel)]="detailE.thematique"
+                    required
+
+                    #thematique="ngModel"
+                  />
+                  <div *ngIf="thematique.errors?.['required']">
+                    <div class="alert alert-danger" role="alert">
+                      <i class="fas fa-exclamation-triangle mr-2"></i>
+                      thematique obligatoire
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary mt-3"
+            [disabled]="form.invalid"
+          >
+            Ajouter detail equipe
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+</div>

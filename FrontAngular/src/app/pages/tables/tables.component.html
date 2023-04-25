@@ -1,0 +1,328 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"></div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <!-- Dark table -->
+  <div
+    *ngIf="alert === true"
+    class="alert alert-success alert-dismissible fade show"
+    role="alert"
+  >
+    <i class="fas fa-check-circle mr-2"></i>
+    <strong>Succès!</strong> {{ msg }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card bg-default shadow mb-5">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Contrats étudiants</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Date debut</th>
+                <th scope="col">Date fin</th>
+                <th scope="col">Specialite</th>
+                <th scope="col">Archive</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Etudiant</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contrat of list">
+                <td>
+                  {{ contrat.dateDebutContrat | date : "dd-MM-yyyy" }}
+                </td>
+                <td>{{ contrat.dateFinContrat | date : "dd-MM-yyyy" }}</td>
+                <td>
+                  {{ contrat.specialite }}
+                </td>
+                <div *ngIf="contrat.archive == true; else notArchived">
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      <i class="bg-warning"></i> archivé
+                    </span>
+                  </td>
+                </div>
+                <ng-template #notArchived>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      <i class="bg-success"></i> non archivé
+                    </span>
+                  </td></ng-template
+                >
+                <td>{{ contrat.montantContrat }} TND</td>
+                <div
+                  *ngIf="
+                    contrat.etudiant?.prenomE && contrat.etudiant?.nomE;
+                    else assignStudent
+                  "
+                >
+                  <td>
+                    {{ contrat.etudiant.prenomE }} {{ contrat.etudiant.nomE }}
+                    <i
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      (click)="getIdContrat(contrat.idContrat)"
+                      class="fas fa-pen fa-lg ml-2 edit-icon"
+                    ></i>
+                  </td>
+                </div>
+                <ng-template #assignStudent>
+                  <td>
+                    <button
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      class="btn btn-neutral btn-icon"
+                      (click)="getIdContrat(contrat.idContrat)"
+                    >
+                      <span class="btn-inner--icon"
+                        ><i class="fas fa-plus"></i
+                      ></span>
+                      <span class="btn-inner--text">affecter étudiant</span>
+                    </button>
+                  </td></ng-template
+                >
+                <td>
+                  <button
+                    class="rounded-btn mr-3"
+                    style="background-color: #3f51b5"
+                    type="button"
+                    [routerLink]="['/updateContrat', contrat.idContrat]"
+                  >
+                    <i class="fas fa-pen"></i>
+                  </button>
+                  <button
+                    class="rounded-btn mr-3"
+                    style="background-color: #f75676"
+                    type="button"
+                    (click)="deleteContrat(contrat.idContrat)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary"
+        style="background-color: #3f51b5; border-color: #3f51b5"
+        [hidden]="showForm === false"
+        (click)="clickShowFormButton()"
+      >
+        Montant à payer
+      </button>
+      <div class="card shadow" [hidden]="showForm">
+        <div class="card-header border-0">
+          <h3 class="mb-0">Montant à payer</h3>
+          <div class="card-body">
+            <form
+              #form="ngForm"
+              (ngSubmit)="getMontantContratBetweenTwoDates()"
+            >
+              <h6 class="heading-small text-muted mb-4">Contrat information</h6>
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="date-debut"
+                        >Date debut</label
+                      >
+                      <input
+                        type="date"
+                        id="date-debut"
+                        name="dateDebut"
+                        class="form-control form-control-alternative"
+                        [(ngModel)]="date.startDate"
+                        required
+                        #dateDebut="ngModel"
+                      />
+                      <div *ngIf="dateDebut.errors?.['required']">
+                        <div class="alert alert-danger" role="alert">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          Date debut obligatoire
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="date-fin"
+                        >Date fin</label
+                      >
+                      <input
+                        type="date"
+                        id="date-fin"
+                        name="dateFin"
+                        class="form-control form-control-alternative"
+                        [(ngModel)]="date.endDate"
+                        required
+                        #dateFin="ngModel"
+                      />
+                      <div *ngIf="dateFin.errors?.['required']">
+                        <div class="alert alert-danger" role="alert">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          Date fin obligatoire
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary mt-3"
+                [disabled]="form.invalid"
+                data-toggle="modal"
+                data-target="#exampleModal2"
+              >
+                Envoyer
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a routerLink="/addContrat" class="float-btn">
+    <i class="fas fa-plus my-float"></i>
+  </a>
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Affecter un étudiant
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            #f="ngForm"
+            (ngSubmit)="assignEtudiantToContrat(etudiant.idEtudiant)"
+          >
+            <div class="form-group">
+              <label class="form-control-label" for="select-specialite"
+                >Etudiants</label
+              >
+              <select
+                id="select-etudiant"
+                name="etudiant"
+                class="form-control form-control-alternative mb-2"
+                aria-label="Default select example"
+                [(ngModel)]="etudiant.idEtudiant"
+                required
+                #etudiant="ngModel"
+              >
+                <option value="default">----</option>
+                <option
+                  *ngFor="let etudiant of studentsList"
+                  [value]="etudiant.idEtudiant"
+                >
+                  {{ etudiant.prenomE }} {{ etudiant.nomE }}
+                </option>
+              </select>
+              <div *ngIf="etudiant.errors?.['required']">
+                <div class="alert alert-danger" role="alert">
+                  <i class="fas fa-exclamation-triangle mr-2"></i>
+                  Choisir un étudiant
+                </div>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="f.invalid"
+            >
+              Sauvegarder
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal2"
+    tabindex="-1"
+    aria-labelledby="exampleModal2Label"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10 mx-auto">
+              <div class="d-flex justify-content-center mb-3">
+                <img
+                  src="assets\img\icons\info.png"
+                  class="img-fluid w-25 h-25"
+                  alt=""
+                />
+              </div>
+              <div class="text-center">
+                Le nombre de contrats encore valides est :
+                <strong style="color: #2dce89"> {{ nbContratsValides }}</strong>
+                <br />
+                Le montant à payer est :
+                <strong style="color: #f5365c"> {{ sumMontant }} TND</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center pt-0">
+          <button
+            type="button"
+            class="btn btn-danger"
+            style="background-color: #f75676; border-color: #f75676"
+            data-dismiss="modal"
+          >
+            <i class="fas fa-times"></i>
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

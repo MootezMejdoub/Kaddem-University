@@ -1,0 +1,107 @@
+
+
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"></div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+
+
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <!-- Dark table -->
+  <div class="row mt-5">
+    <div class="col">
+      
+      
+  
+      <div class="card bg-default shadow">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Les equipes           <button class="bg-warning "  (click)="upgradeEquipes()">Upgrade</button>
+            
+          </h3>
+
+        </div>
+       
+        <div class="table-responsive" >
+          <div>
+           <h3 class="text-white mb-0">Nombre d'équipes {{selectedTeam}}: {{nbreByNiveau}} 
+            <select [(ngModel)]="selectedTeam" (click)="countByNiveau(selectedTeam)" aria-label="Selectionner un niveau"  class="bg-warning "  >
+              <option default>Open this select menu</option>
+
+              <option  value="JUNIOR">JUNIOR</option>
+              <option  value="SENIOR">SENIOR</option>
+              <option value="EXPERT">EXPERT</option>
+             </select>
+           </h3> 
+            
+           
+          </div>
+          <br>
+          <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+              <tr>
+                <th></th>
+                <th scope="col">Nom Equipe</th>
+                <th scope="col">Niveau</th>
+               <th scope="col">Actions </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let e of listEquipes;let i=index">
+                <td>{{i+1}}</td>
+                <th scope="row">
+                  
+                  <div class="media align-items-center">
+                    <a
+                      href="javascript:void(0)"
+                      class="avatar rounded-circle mr-3"
+                    >
+                      <img
+                        alt="Image placeholder"
+                        src="../assets/img/theme/bootstrap.jpg"
+                      />
+                    </a>
+                    <div class="media-body">
+                      <span class="mb-0 text-sm">{{e.nomEquipe}}</span>
+                    </div>
+                  </div>
+                </th>
+               
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    <i class="bg-warning"></i> {{e.niveau}}
+                  </span>
+                  
+                </td>
+                <td >
+                  <button class="btn bg-gradient-danger" routerLink="/add-equipe">                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  </button>&nbsp;
+                
+                  <button class="btn btn-danger" (click)="deleteEquipe(e.idEquipe)"><i class="fa fa-trash" aria-hidden="true"></i></button>&nbsp;
+                  <button class="btn btn-info" [routerLink]="['/updateEquipe',e.idEquipe]"><i class="fa fa-pen" aria-hidden="true"></i></button>&nbsp;
+                  <div  (click)="getEtudiantsByEquipe(e.idEquipe)" ngbDropdown placement="bottom-right">
+                    <a  class="btn btn-sm btn-icon-only text-light"ngbDropdownToggle>
+                      <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div   ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                      <a  *ngFor="let etud of listEtudiants" class="dropdown-item" href="javascript:void(0)">{{etud.prenomE}}</a>
+                      
+                    </div>
+                  </div>
+                </td>
+              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

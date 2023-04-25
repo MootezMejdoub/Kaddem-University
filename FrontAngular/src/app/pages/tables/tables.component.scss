@@ -1,0 +1,52 @@
+.rounded-btn {
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 14px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 3px black;
+}
+
+.rounded-btn:active {
+  transform: translateY(2px);
+}
+
+.float-btn {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #3f51b5;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px black;
+}
+
+.float-btn:active {
+  transform: translateY(2px);
+}
+
+.my-float {
+  margin-top: 22px;
+}
+
+.alert-success {
+  color: #fff;
+  background-color: #66bb6a;
+  border-color: #66bb6a;
+}
+
+.edit-icon {
+  color: #2dce89;
+  cursor: pointer;
+}
+
+.edit-icon:hover {
+  color: #5e72e4;
+}

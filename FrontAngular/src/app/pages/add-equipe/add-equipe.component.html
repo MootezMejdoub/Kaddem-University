@@ -1,0 +1,52 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+      <div class="header-body">
+        <!-- Card stats -->
+        <div class="row"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <!-- Dark table -->
+    <div class="row mt-5">
+      <div class="col">
+        <div class="card bg-default shadow">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="text-white mb-0">Ajouter une equipe</h3>
+          </div>
+          <div class="table-responsive" >
+            
+
+            <form (ngSubmit)="addEquipe()">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label  for="exampleInputEmail1">Nom Equipe</label>
+                    <input [(ngModel)] = "equipeData.nomEquipe" name="nomEquipe" type="text" class="form-control"  placeholder="Nom">
+                  </div>
+  
+  
+                  <label>Options</label>
+                  <select name="departement" class="form-select" aria-label="Default select example" [(ngModel)] = "equipeData.niveau" >
+                      
+                      <option value="JUNIOR">JUNIOR</option>
+                      <option value="SENIOR">SENIOR</option>
+                      <option value="EXPERT">EXPERT</option>
+                    </select>
+                </div>
+               
+                <!-- /.card-body -->
+               
+                <div class="card-footer">
+                  <button type="submit"  class="btn btn-primary">Submit</button>
+                  <button class="btn btn-warning" routerLink="/equipes">Back</button>
+                </div>
+              </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

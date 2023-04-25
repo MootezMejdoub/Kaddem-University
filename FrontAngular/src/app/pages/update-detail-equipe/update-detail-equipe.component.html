@@ -1,0 +1,98 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"></div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <!-- Dark table -->
+  <div class="row mt-3">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0">Ajouter un contrat</h3>
+          <div class="card-body">
+            <form #form="ngForm" (ngSubmit)="updateDe()" >
+              <h6 class="heading-small text-muted mb-4">detail equipe information</h6>
+              <div class="pl-lg-4">
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="input-montant"
+                        >Salle</label
+                      >
+
+                      <input
+                      type="number"
+                      id="input-montant"
+                      name="montant"
+                      class="form-control form-control-alternative"
+                      placeholder="Montant"
+                      [(ngModel)]="detailE.salle"
+                      required
+                      pattern="[1-9][0-9]*"
+                      #montant="ngModel"
+                    />
+                    <div *ngIf="montant.errors?.['required']">
+                      <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Salle obligatoire
+                      </div>
+                    </div>
+                    <div *ngIf="montant.errors?.['pattern']">
+                      <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        La salle ne contient que des chiffres
+                        positives
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="input-them"
+                        >thématique</label
+                      >
+                      <input
+                        type="text"
+                        id="input-them"
+                        name="thematique"
+                        class="form-control form-control-alternative"
+                        placeholder="thematique"
+                        [(ngModel)]="detailE.thematique"
+                        required
+
+                        #thematique="ngModel"
+                      />
+                      <div *ngIf="thematique.errors?.['required']">
+                        <div class="alert alert-danger" role="alert">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          thematique obligatoire
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <button
+                type="submit"
+                class="btn btn-primary mt-3"
+                [disabled]="form.invalid"
+              >
+                Modifier detail equipe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
